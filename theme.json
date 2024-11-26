@@ -1,0 +1,37 @@
+{
+    "button": {
+        "colours":
+        {
+            "normal_bg":"#ffffff",
+            "hovered_bg":"#c2c2c2",
+            "disabled_bg":"#25292e",
+            "selected_bg":"#193754",
+            "active_bg":"#193754",
+            "dark_bg":"#15191e",
+            "normal_text":"#000000",
+            "hovered_text":"#000000",
+            "selected_text":"#FFFFFF",
+            "disabled_text":"#6d736f",
+            "active_text":"#FFFFFF",
+            "normal_border": "#000000",
+            "hovered_border": "#000000",
+            "disabled_border": "#808080",
+            "selected_border": "#8080B0",
+            "active_border": "#8080B0"
+        },
+
+        "misc":
+        {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "15, 15, 15, 15",
+            "border_width": "1",
+            "shadow_width": "2"
+        },
+
+        "font":
+        {
+            "name": "Arial",
+            "size": 18
+        }
+    }
+}
