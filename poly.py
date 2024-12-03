@@ -41,7 +41,8 @@ class Poly:
         else:
             raise ValueError("Ось может быть только 'x', 'y' или 'z'")
         
-        self.vertices = self.center + np.dot(self.vertices - self.center, rotation_matrix.T)
+        self.vertices = self.center + np.dot(
+            self.vertices - self.center, rotation_matrix.T)
 
     def save_to_file(self, filename):
         try:
@@ -60,9 +61,11 @@ class Poly:
         with open(filename, 'r') as file:
             lines = file.readlines()
         vertex_count = int(lines[0])
-        vertices = [list(map(float, lines[i + 1].split())) for i in range(vertex_count)]
+        vertices = [list(map(float, lines[i + 1].split())) 
+                    for i in range(vertex_count)]
         face_count = int(lines[vertex_count + 1])
-        faces = [list(map(int, lines[vertex_count + 2 + i].split())) for i in range(face_count)]
+        faces = [list(map(int, lines[vertex_count + 2 + i].split())) 
+                 for i in range(face_count)]
         return Poly(vertices, faces)
 
 
@@ -70,10 +73,9 @@ def draw_poly(screen, poly):
     width, height = screen.get_size()
     projected_vertices = []
     for vertex in poly.vertices:
-        x, y, z = vertex
-        f = 500 / (z + 5)
-        x_proj = int(width // 2 + f * x)
-        y_proj = int(height // 2 - f * y)
+        x, y, _ = vertex
+        x_proj = int(width // 2 + x)
+        y_proj = int(height // 2 - y)
         projected_vertices.append((x_proj, y_proj))
 
     for face in poly.faces:
@@ -88,33 +90,40 @@ def main():
     manager = pygame_gui.UIManager((800, 800), theme_path)
     
     # Кнопки GUI
-    translate_up_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20, 430), (100, 50)),
-                                                       text='Вверх', manager=manager)
-    translate_down_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20, 490), (100, 50)),
-                                                         text='Вниз', manager=manager)
-    translate_left_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20, 550), (100, 50)),
-                                                         text='Влево', manager=manager)
-    translate_right_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20, 610), (100, 50)),
-                                                         text='Вправо', manager=manager)
-    translate_forward_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20, 670), (100, 50)),
-                                                         text='Вперёд', manager=manager)
-    translate_backward_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20, 730), (100, 50)),
-                                                         text='Назад', manager=manager)
-    scale_up_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((140, 670), (100, 50)),
-                                                   text='Растяжение', manager=manager)
-    scale_down_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((140, 730), (100, 50)),
-                                                     text='Сжатие', manager=manager)
-    rotate_x_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((260, 610), (100, 50)),
-                                                   text='Поворот X', manager=manager)
-    rotate_y_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((260, 670), (100, 50)),
-                                                   text='Поворот Y', manager=manager)
-    rotate_z_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((260, 730), (100, 50)),
-                                                   text='Поворот Z', manager=manager)
+    translate_up_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((20, 550), (100, 50)),
+        text='Вверх', manager=manager)
+    translate_down_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((20, 610), (100, 50)),
+        text='Вниз', manager=manager)
+    translate_left_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((20, 670), (100, 50)),
+        text='Влево', manager=manager)
+    translate_right_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((20, 730), (100, 50)),
+        text='Вправо', manager=manager)
+    scale_up_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((140, 670), (100, 50)),
+        text='Растяжение', manager=manager)
+    scale_down_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((140, 730), (100, 50)),
+        text='Сжатие', manager=manager)
+    rotate_x_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((260, 610), (100, 50)),
+        text='Поворот X', manager=manager)
+    rotate_y_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((260, 670), (100, 50)),
+        text='Поворот Y', manager=manager)
+    rotate_z_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((260, 730), (100, 50)),
+        text='Поворот Z', manager=manager)
 
     clock = pygame.time.Clock()
 
     Tk().withdraw()
-    filename = filedialog.askopenfilename(title="Выберите файл многогранника", filetypes=[("Text Files", "*.txt")])
+    filename = filedialog.askopenfilename(
+        title="Выберите файл многогранника", 
+        filetypes=[("Text Files", "*.txt")])
     if not filename:
         return
 
@@ -134,17 +143,13 @@ def main():
             # Обработка кнопок GUI
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == translate_up_button:
-                    poly.translate(0, 0.1, 0)
+                    poly.translate(0, 10, 0)
                 elif event.ui_element == translate_down_button:
-                    poly.translate(0, -0.1, 0)
+                    poly.translate(0, -10, 0)
                 elif event.ui_element == translate_left_button:
-                    poly.translate(-0.1, 0, 0)
+                    poly.translate(-10, 0, 0)
                 elif event.ui_element == translate_right_button:
-                    poly.translate(0.1, 0, 0)
-                elif event.ui_element == translate_forward_button:
-                    poly.translate(0, 0, 0.1)
-                elif event.ui_element == translate_backward_button:
-                    poly.translate(0, 0, -0.1)    
+                    poly.translate(10, 0, 0)    
                 elif event.ui_element == scale_up_button:
                     poly.scale(1.1)
                 elif event.ui_element == scale_down_button:
@@ -161,13 +166,13 @@ def main():
         # Обработка клавиш
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
-            poly.translate(0, 0.1, 0)
+            poly.translate(0, 10, 0)
         if keys[pygame.K_DOWN]:
-            poly.translate(0, -0.1, 0)
+            poly.translate(0, -10, 0)
         if keys[pygame.K_LEFT]:
-            poly.translate(-0.1, 0, 0)
+            poly.translate(-10, 0, 0)
         if keys[pygame.K_RIGHT]:
-            poly.translate(0.1, 0, 0)
+            poly.translate(10, 0, 0)
         if keys[pygame.K_w]:
             poly.scale(1.1)
         if keys[pygame.K_s]:
@@ -184,7 +189,9 @@ def main():
 
         pygame.display.flip()
 
-    save_filename = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text Files", "*.txt")])
+    save_filename = filedialog.asksaveasfilename(
+        defaultextension=".txt", 
+        filetypes=[("Text Files", "*.txt")])
     if save_filename:
         poly.save_to_file(save_filename)
     
